@@ -1,4 +1,5 @@
 from sys import argv
+
 from persistence.repository import repo # creates the db when importing repo
 
 def main():
