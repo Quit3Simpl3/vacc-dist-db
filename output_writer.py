@@ -5,8 +5,8 @@ def _initialize(path):
     pass # TODO: open the output.txt file for writing
 
 class OutputWriter():
-    def __init__(self):
-        pass
+    def __init__(self, path):
+        self.path = path
 
     def get_total_inventory(self):
         pass # TODO: query the db for total inventory
@@ -21,4 +21,5 @@ class OutputWriter():
         pass # TODO: query the db for total sent
 
     def write_order_output(self):
-        pass
+        with open(path, "wb") as file:
+            file.writeline("...")

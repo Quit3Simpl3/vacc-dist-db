@@ -4,8 +4,11 @@ from persistence.repository import repo # creates the db when importing repo
 def main():
     #> python3 main.py config.txt orders.txt output.txt
     parse_config_file(argv[1]) # read & parse config.txt and configure the db
-    orders_path = argv[2] # read line-by-line & parse orders.txt and execute the orders
-    output_path = argv[3] # create output.txt according to the supplied path
+    execute_orders(argv[2], argv[3]) # read line-by-line & parse orders.txt and execute the orders. create output.txt
+
+def execute_orders(orders_path, output_path):
+    with open(path, "rb") as file:
+        pass # TODO
 
 def parse_config_file(path):
     with open(path, "rb") as file:
