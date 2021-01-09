@@ -1,4 +1,4 @@
-from dbtools import orm
+from .dbtools import orm
 
 class Dao():
     def __init__(self, dto_type, conn):
@@ -22,18 +22,25 @@ class Dao():
             )
         self._conn.execute(query, args)
 
-    def get_all(self):
+    def get_all(self, columns="*"):
         cursor = self._conn.cursor()
-        cursor.execute('SELECT * FROM {table_name}'.format(table_name=self._table_name))
+        cursor.execute('SELECT {columns} FROM {table_name}'.format(
+            columns=(", ").joins(columns),
+            table_name=self._table_name)
+            )
         return orm(cursor, self._dto_type)
 
-    def get(self, **keyvals):
+    def get(self, order_by="id", **keyvals):
         column_names = keyvals.keys()
+        if order_by not in column_names:
+            order_by = "id"
+
         args = keyvals.values()
-        query = 'SELECT * FROM {table_name} WHERE {conditions}'.format(
+        query = 'SELECT * FROM {table_name} WHERE {conditions} ORDER BY {order_by}'.format(
             table_name=self._table_name,
-            conditions=' AND '.join([col + '=?' for col in column_names])
-            )
+            conditions=' AND '.join([col + '=?' for col in column_names]),
+            order_by=order_by
+        )
         cursor = self._conn.cursor()
         cursor.execute(query, args)
         return orm(cursor, self._dto_type)
@@ -50,3 +57,6 @@ class Dao():
             conditions=' AND '.join([cond + '=?' for cond in cond_column_names])
             )
         self._conn.execute(query, params)
+
+    def delete(self):
+        pass # TODO

@@ -21,9 +21,6 @@ class Clinic():
         self.logistic = logistic
         self.dao = Dao(Clinic, conn)
 
-    def update_amount(self, new_amount):
-        self.dao.update({"..."})
-
 
 class Logistic():
     def __init__(self, id, name, count_sent, count_received):
