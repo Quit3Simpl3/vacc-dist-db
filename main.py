@@ -44,11 +44,8 @@ def parse_config_file(path):
 
         # Bulk insert all the DTOs into the DB:
         repo.vaccines.insert_bulk([Vaccine(*line.split(",")) for line in lines[:vaccines_index]])
-
         repo.suppliers.insert_bulk([Supplier(*line.split(",")) for line in lines[vaccines_index:suppliers_index]])
-
         repo.clinics.insert_bulk([Clinic(*line.split(",")) for line in lines[suppliers_index:clinics_index]])
-
         repo.logistics.insert_bulk([Logistic(*line.split(",")) for line in lines[clinics_index:logistics_index]])
 
 

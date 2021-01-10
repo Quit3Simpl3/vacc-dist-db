@@ -2,3 +2,5 @@
 /.idea/
 /.idea/*
 /*.db
+/__pycache__/
+/persistence/__pycache__/
