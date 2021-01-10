@@ -40,31 +40,38 @@ class ReceiveOrder(Order):
     def execute(self):
         self.receive()
         super().execute()
-        
+
 
 class SendOrder(Order):
     def __init__(self, clinic, amount, output_writer):
         super().__init__(output_writer)
         self.clinic = repo.clinics.get(location=clinic)[0]
-        self.amount = int(amount)
+        self._amount = int(amount)
         self.logistic = repo.logistics.get(id=self.clinic.logistic)[0]
+
+    @property
+    def amount(self):
+        return self._amount
 
     def acquire_vaccines(self):
         # get the required amount of vaccines from db
-        while self.amount > 0:
+        tmp_amount = self.amount
+        while tmp_amount > 0:
             # vaccines = repo.vaccines.get_all(order_by="date", ascending=True) # get the vaccines, oldest first
             # vaccine = vaccines[0]
             vaccine = repo.vaccines.get_all(order_by="date", ascending=True)[0] # get the vaccines, oldest first
-            if vaccine.quantity > self.amount:
-                vaccine.quantity -= self.amount
+            if vaccine.quantity > tmp_amount:
+                vaccine.quantity -= tmp_amount
                 repo.vaccines.update({"quantity": vaccine.quantity}, {"id": vaccine.id})
-                self.amount = 0
+                tmp_amount = 0
+                
             else:
-                self.amount -= vaccine.quantity
+                tmp_amount -= vaccine.quantity
                 repo.vaccines.delete(id=vaccine.id)  # update vaccine table
 
     def update_logistic(self):
         count_sent = self.logistic.count_sent + self.amount
+        print("self.logistic.count_sent={}, count_sent={}".format(self.logistic.count_sent, count_sent))
         repo.logistics.update({"count_sent": count_sent}, {"id": self.logistic.id})
 
     def update_clinic(self):

@@ -1,10 +1,9 @@
 from persistence.repository import repo
 
-
 class OutputWriter():
     def __init__(self, path):
         self.path = path
-        with open(path,'w'):
+        with open(path, 'w'):
             pass
 
     def get_total_inventory(self):
@@ -21,6 +20,7 @@ class OutputWriter():
 
     def get_total_sent(self):
         logistics = repo.logistics.get_all()
+        # print("logistics={}".format(",".join([str(vars(logistic)) for logistic in logistics])))
         return sum([logistic.count_sent for logistic in logistics])
 
     def write(self):
