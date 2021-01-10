@@ -20,7 +20,6 @@ class OutputWriter():
 
     def get_total_sent(self):
         logistics = repo.logistics.get_all()
-        # print("logistics={}".format(",".join([str(vars(logistic)) for logistic in logistics])))
         return sum([logistic.count_sent for logistic in logistics])
 
     def write(self):

@@ -57,21 +57,18 @@ class SendOrder(Order):
         # get the required amount of vaccines from db
         tmp_amount = self.amount
         while tmp_amount > 0:
-            # vaccines = repo.vaccines.get_all(order_by="date", ascending=True) # get the vaccines, oldest first
-            # vaccine = vaccines[0]
             vaccine = repo.vaccines.get_all(order_by="date", ascending=True)[0] # get the vaccines, oldest first
             if vaccine.quantity > tmp_amount:
                 vaccine.quantity -= tmp_amount
                 repo.vaccines.update({"quantity": vaccine.quantity}, {"id": vaccine.id})
                 tmp_amount = 0
-                
+
             else:
                 tmp_amount -= vaccine.quantity
                 repo.vaccines.delete(id=vaccine.id)  # update vaccine table
 
     def update_logistic(self):
         count_sent = self.logistic.count_sent + self.amount
-        print("self.logistic.count_sent={}, count_sent={}".format(self.logistic.count_sent, count_sent))
         repo.logistics.update({"count_sent": count_sent}, {"id": self.logistic.id})
 
     def update_clinic(self):
