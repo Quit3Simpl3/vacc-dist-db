@@ -19,7 +19,6 @@ class Clinic():
         self.location = location
         self.demand = demand
         self.logistic = logistic
-        self.dao = Dao(Clinic, conn)
 
 
 class Logistic():
