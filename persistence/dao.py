@@ -23,10 +23,11 @@ class Dao():
 
         self._conn.execute(query, args)
 
-    def get_all(self,order_by="id",ascending =True):
+    def get_all(self, order_by="id", ascending =True):
         cursor = self._conn.cursor()
         if ascending:
             order_by += " ASC"
+            
         cursor.execute('SELECT * FROM {table_name} ORDER BY {order_by}'.format(
             table_name=self._table_name,
             order_by=order_by
