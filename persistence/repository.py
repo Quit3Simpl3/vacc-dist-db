@@ -20,7 +20,13 @@ class _Repository():
         self._conn.close()
 
     def _create_tables(self): # TODO
+        '''   IF vaccines IN (SELECT table_name FROM information_schema.tables WHERE table_schema = 'database')
+                THEN DROP vaccines '''
         self._conn.executescript("""
+                DROP TABLE IF EXISTS 'vaccines';
+                DROP TABLE IF EXISTS 'suppliers';
+                DROP TABLE IF EXISTS 'logistics';
+                DROP TABLE IF EXISTS 'clinics';
                 CREATE TABLE vaccines (
                     id              INTEGER     PRIMARY KEY,
                     date            DATE        NOT NULL,
